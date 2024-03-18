@@ -15,4 +15,4 @@ if (NOT FUNCHOOK_LIBRARY)
     message(FATAL_ERROR "Funchook library not found")
 endif ()
 
-target_link_libraries(tf2_detour_library ${FUNCHOOK_LIBRARY} dl)
+target_link_libraries(tf2_detour_library ${FUNCHOOK_LIBRARY})
