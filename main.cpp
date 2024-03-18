@@ -31,7 +31,7 @@ int Detour_OnTakeDamage(void* pThis, void* pDamageInfo)
     if (!pCritType || !pDamageType)
     {
         std::cout << "CritType, DamageType pointer invalid!" << std::endl;
-        return false;
+        return originalOnTakeDamage(pThis, pDamageInfo);
     }
 
     //Only set if it's not already Critical it breaks for some reason and i don't want to look into it
