@@ -5,8 +5,6 @@
 #include <funchook.h>
 #include <iomanip>
 #include <sys/mman.h>
-#include <chrono>
-#include <thread>
 
 #define CTFPlayer_OnTakeDamage_ADDRESS 0x00000000011e5310
 #define MAD_MILK_MULT_ADDRESS 0x0000000000B947D8
