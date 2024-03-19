@@ -2,6 +2,7 @@
 #include <dlfcn.h>
 #include <unistd.h>
 #include <cstring>
+#include <vector>
 #include <funchook.h>
 #include <iomanip>
 #include <sys/mman.h>
@@ -146,11 +147,10 @@ void SetupPatchMadMilkMult()
 
     std::cout << "Writing Bytes..." << std::endl;
 
-    uintptr_t nextInstructionAddress = reinterpret_cast<uintptr_t>(pBytes + 8);
-    int32_t newOffSet = reinterpret_cast<uintptr_t>(pFloat) - nextInstructionAddress;
-
-    size_t pageSize = getpagesize();
-    uintptr_t pageStart = reinterpret_cast<uintptr_t>(pBytes) & -pageSize;
+    uintptr_t pageSize = sysconf(_SC_PAGESIZE);
+    uint8_t* pAlignAddress = (uint8_t*)(reinterpret_cast<uintptr_t>(pBytes) & ~(pageSize - 1));
+    uint8_t* end = reinterpret_cast<uint8_t*>(pBytes) + 8;
+    uintptr_t alignSize = end - pAlignAddress;
 
     /*
      * This here is unstable AF if this patch is applied after players have joined any execution of
@@ -163,13 +163,36 @@ void SetupPatchMadMilkMult()
      * UPDATE: I now apply the detour after the patch now it's reversed it will crash if you apply it before the
      * player joining
      */
-    if (mprotect(reinterpret_cast<void*>(pageStart), pageSize, PROT_READ | PROT_WRITE | PROT_EXEC) != 0)
+
+    /*
+     * UPDATE 2: Fixed it I forgot to align with the Page beginning and the length incase pBytes is on 2 seperate pages!
+     * Before we just took the page size as a length now we calculate the length by getting the start Address of the page
+     * then we subtract it from the end address of the movss instruction aka the address of the next instruction
+     */
+    if (mprotect(pAlignAddress, alignSize, PROT_READ | PROT_WRITE | PROT_EXEC) != 0)
     {
         perror("mprotect");
         return;
     }
 
-    std::memcpy(pBytes + 4, &newOffSet, sizeof(newOffSet));
+    int32_t offset = reinterpret_cast<uintptr_t>(pFloat) - reinterpret_cast<uintptr_t>(pBytes + 8);
+
+    unsigned char newSig[8] = {0xF3, 0x0F, 0x10, 0x05};
+
+    //little endian
+    newSig[7] = (offset >> 24) & 0xFF;
+    newSig[6] = (offset >> 16) & 0xFF;
+    newSig[5] = (offset >> 8) & 0xFF;
+    newSig[4] = offset & 0xFF;
+
+    std::memcpy(pBytes, newSig, 8);
+
+    for (size_t i = 0; i < 8; i++)
+    {
+        std::cout << "Byte " << i << ": "
+                  << std::hex << std::setw(2) << std::setfill('0')
+                  << static_cast<int>(pBytes[i]) << std::endl;
+    }
 
     std::cout << "Wrote new allocated memory with new Value to operand: " << *pFloat << std::endl;
 
@@ -180,6 +203,5 @@ void Setup()
 {
     GetFunctionPointer();
     SetupPatchMadMilkMult();
-    //some weird stuff happens when the detour is active to the madmilk patch have to figure this out
-    //SetupDetour();
+    SetupDetour();
 }
