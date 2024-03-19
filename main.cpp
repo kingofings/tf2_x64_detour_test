@@ -148,8 +148,8 @@ void SetupPatchMadMilkMult()
 
     uintptr_t pageSize = sysconf(_SC_PAGESIZE);
     uint8_t* pAlignAddress = (uint8_t*)(reinterpret_cast<uintptr_t>(pBytes) & ~(pageSize - 1));
-    uint8_t* end = reinterpret_cast<uint8_t*>(pBytes) + 8;
-    uintptr_t alignSize = end - pAlignAddress;
+    uint8_t* pEndAddress = reinterpret_cast<uint8_t*>(pBytes) + 8;
+    uintptr_t alignSize = pEndAddress - pAlignAddress;
 
     /*
      * This here is unstable AF if this patch is applied after players have joined any execution of
