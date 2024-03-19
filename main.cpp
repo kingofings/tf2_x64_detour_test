@@ -2,7 +2,6 @@
 #include <dlfcn.h>
 #include <unistd.h>
 #include <cstring>
-#include <vector>
 #include <funchook.h>
 #include <iomanip>
 #include <sys/mman.h>
