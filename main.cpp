@@ -33,12 +33,6 @@ int Detour_OnTakeDamage(void* pThis, void* pDamageInfo)
     int* pCritType = reinterpret_cast<int*>(reinterpret_cast<char*>(pDamageInfo) + CTakeDamageInfo_m_eCritType_OFFSET);
     int* pDamageType = reinterpret_cast<int*>(reinterpret_cast<char*>(pDamageInfo) + CTakeDamageInfo_m_bitsDamageType_OFFSET);
 
-    if (!pCritType || !pDamageType)
-    {
-        std::cout << "CritType, DamageType pointer invalid!" << std::endl;
-        return originalOnTakeDamage(pThis, pDamageInfo);
-    }
-
     //Only set if it's not already Critical it breaks for some reason and I don't want to look into it
     if (*pCritType != CritType_Crit && !(*pDamageType & DMG_CRITICAL))
     {
