@@ -33,7 +33,7 @@ int Detour_OnTakeDamage(void* pThis, void* pDamageInfo)
     int* pCritType = reinterpret_cast<int*>(reinterpret_cast<char*>(pDamageInfo) + CTakeDamageInfo_m_eCritType_OFFSET);
     int* pDamageType = reinterpret_cast<int*>(reinterpret_cast<char*>(pDamageInfo) + CTakeDamageInfo_m_bitsDamageType_OFFSET);
 
-    //Only set if it's not already Critical it breaks for some reason and I don't want to look into it
+    //Only set if it's not already Critical it breaks otherwise
     if (*pCritType != CritType_Crit && !(*pDamageType & DMG_CRITICAL))
     {
         *pCritType = CritType_Crit;
