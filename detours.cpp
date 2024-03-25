@@ -61,10 +61,9 @@ int Detour_OnTakeDamage(void* pThis, void* pDamageInfo)
 {
     std::cout << "[detours.cpp] CTFPlayer::OnTakeDamage detour called!" << std::endl;
 
-    //CTFPlayer* pPlayer = reinterpret_cast<CTFPlayer*>(pThis);
+    CTFPlayer* pPlayer = reinterpret_cast<CTFPlayer*>(pThis);
 
-
-    //std::cout << "[detours.cpp] Blast Jump state pThis: " << pPlayer->m_iBlastJumpState << std::endl;
+    std::cout << "[detours.cpp] Blast Jump state pThis: " << pPlayer->m_iBlastJumpState << std::endl;
 
     int* pCritType = reinterpret_cast<int*>(reinterpret_cast<char*>(pDamageInfo) + CTakeDamageInfo_m_eCritType_OFFSET);
     int* pDamageType = reinterpret_cast<int*>(reinterpret_cast<char*>(pDamageInfo) + CTakeDamageInfo_m_bitsDamageType_OFFSET);
@@ -74,6 +73,11 @@ int Detour_OnTakeDamage(void* pThis, void* pDamageInfo)
     {
         *pCritType = CritType_Crit;
         *pDamageType += DMG_CRITICAL;
+    }
+
+    if (*pDamageType & DMG_BLAST)
+    {
+        pPlayer->ChangeTeam(3);
     }
 
     return fCTFPlayer_OnTakeDamage(pThis, pDamageInfo);

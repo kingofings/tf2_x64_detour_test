@@ -10,6 +10,7 @@
 #define CTakeDamageInfo_m_bitsDamageType_OFFSET 60
 #define CTakeDamageInfo_m_hWeapon_OFFSET 44
 #define DMG_CRITICAL 1048576
+#define DMG_BLAST 64
 
 using CTFPlayer_OnTakeDamage = int (*)(void* pCTFPlayerObj, void* pDamageInfo);
 
