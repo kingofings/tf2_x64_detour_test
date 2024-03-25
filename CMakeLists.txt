@@ -5,9 +5,13 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
 
 add_library(tf2_detour_library SHARED main.cpp
+        CTFPlayer.h
+        Utility.cpp
+        Utility.h
+        detours.cpp
+        detours.h
+        Enums.h
 )
-
-#include_directories(/usr/local/include)
 
 find_library(FUNCHOOK_LIBRARY NAMES funchook)
 
