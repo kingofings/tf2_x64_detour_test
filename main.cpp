@@ -73,6 +73,7 @@ void SetupPatchMadMilkMult()
      * Before we just took the page size as a length now we calculate the length by getting the start Address of the page
      * then we subtract it from the end address of the movss instruction aka the address of the next instruction
      */
+
     if (mprotect(pAlignAddress, alignSize, PROT_READ | PROT_WRITE | PROT_EXEC) != 0)
     {
         perror("mprotect");
