@@ -5,7 +5,7 @@
 #ifndef TF2_DETOUR_LIBRARY_DETOURS_H
 #define TF2_DETOUR_LIBRARY_DETOURS_H
 
-#define CTFPlayer_OnTakeDamage_ADDRESS 0x00000000011e5310
+#define CTFPlayer_OnTakeDamage_ADDRESS 0x00000000011e9490
 #define CTakeDamageInfo_m_eCritType_OFFSET 100
 #define CTakeDamageInfo_m_bitsDamageType_OFFSET 60
 #define CTakeDamageInfo_m_hWeapon_OFFSET 44
