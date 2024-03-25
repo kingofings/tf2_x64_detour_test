@@ -13,7 +13,7 @@ ulong Utility::GetBaseAddress()
 {
     if (m_BaseAddress > 0) return m_BaseAddress;
 
-    std::cout << "Getting Function Pointer..." << std::endl;
+    std::cout << "Getting Base Pointer..." << std::endl;
 
     pid_t pid = getpid();
     char mapsFile[256];
