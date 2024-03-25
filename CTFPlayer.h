@@ -7,6 +7,11 @@
 
 
 class CTFPlayer {
+
+private:
+    //offset -8 bytes due to vtable pointer
+    [[maybe_unused]] uint8_t __pad1[0x2584];
+
 public:
 
     virtual void unknown0() {}
@@ -108,7 +113,6 @@ public:
     virtual void unknown96() {}
     virtual int ChangeTeam(int team);
 
-    uint8_t __padding[9612];
     int m_iBlastJumpState;
 };
 
